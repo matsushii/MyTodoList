@@ -14,6 +14,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //  保存しているToDoの読み込み処理
+        let userDefaults = UserDefaults.standard
+        if let storedToDoList = userDefaults.array(forKey: "todoList") as? [String] {
+            todoList.append(contentsOf: storedToDoList)
+        }
     }
 
     @IBAction func tapAddButton(_ sender: Any) {
@@ -28,8 +34,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if let textField = alertController.textFields?.first {
                 //  ToDoの配列に入力値を挿入（先頭に挿入しする）
                 self.todoList.insert(textField.text!, at:0)
-                //  テーブルに行が追加されたことをテーブルに追加
+                //  テーブルに行が追加されたことをテーブルに通知
                 self.tableView.insertRows(at: [IndexPath(row:0, section: 0)], with: UITableView.RowAnimation.right)
+                //  ToDoの保存処理
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(self.todoList, forKey: "todoList")
+                userDefaults.synchronize()
             }
         }
         //  OKボタンがタップされた時の処理
