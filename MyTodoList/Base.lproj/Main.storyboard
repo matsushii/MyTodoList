@@ -53,7 +53,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Kvl-eJ-DkG">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="TUu-W4-vIX"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="TUu-W4-vIX">
+                            <connections>
+                                <action selector="tapAddButton:" destination="BYZ-38-t0r" id="n8u-S4-Ifm"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="9Qe-zt-z3o" id="Lxw-On-4VR"/>
