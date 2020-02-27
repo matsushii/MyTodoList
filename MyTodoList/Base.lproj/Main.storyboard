@@ -55,6 +55,9 @@
                     <navigationItem key="navigationItem" id="Kvl-eJ-DkG">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="TUu-W4-vIX"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="9Qe-zt-z3o" id="Lxw-On-4VR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
