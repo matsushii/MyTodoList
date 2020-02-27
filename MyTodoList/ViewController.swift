@@ -41,5 +41,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         //  アラートダイアログを表示
         present(alertController, animated: true, completion: nil)
     }
+    //  テーブルの行数を返却する
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //  ToDoの配列の長さを返却する
+        return todoList.count
+    }
+    //  テーブルの行ごとのセルを返却する
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //  StoryBoardで指定したtodoCellのき識別子を利用して再利用可能なセルを取得する
+        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
+        //  行番号にあったToDoのタイトルを取得
+        let todoTitle = todoList[indexPath.row]
+        //  セルのラベルにToDoのタイトルをセット
+        cell.textLabel?.text = todoTitle
+        return cell
+    }
+    
 }
 
