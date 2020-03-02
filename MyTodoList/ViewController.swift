@@ -111,28 +111,48 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         } catch {
             //  エラー処理なし
         }
-}
+    }
 
     @objc(_TtCC10MyTodoList14ViewController6MyTodo)class MyTodo: NSObject, NSSecureCoding {
-    static var supportsSecureCoding: Bool {
-        return true
+        static var supportsSecureCoding: Bool {
+            return true
+        }
+        //  ToDoのタイトル
+        var todoTitle: String?
+        //  ToDoを完了したかを表すフラグ
+        var todoDone: Bool = false
+        //  コントラスタ
+        override init() {
+        }
+        //  NSCodingプロトコルに宣言されているデシリアライズ処理
+        required init?(coder aDecorder: NSCoder) {
+            todoTitle = aDecorder.decodeObject(forKey: "todoTitle") as? String
+            todoDone = aDecorder.decodeBool(forKey: "todoDone")
+        }
+        //  NSCodingプロトコルに宣言されているシリアライズ処理
+        func encode(with aCoder: NSCoder) {
+            aCoder.encode(todoTitle, forKey: "todoTitle")
+            aCoder.encode(todoDone, forKey: "todoDone")
+        }
     }
-    //  ToDoのタイトル
-    var todoTitle: String?
-    //  ToDoを完了したかを表すフラグ
-    var todoDone: Bool = false
-    //  コントラスタ
-    override init() {
-    }
-    //  NSCodingプロトコルに宣言されているデシリアライズ処理
-    required init?(coder aDecorder: NSCoder) {
-        todoTitle = aDecorder.decodeObject(forKey: "todoTitle") as? String
-        todoDone = aDecorder.decodeBool(forKey: "todoDone")
-    }
-    //  NSCodingプロトコルに宣言されているシリアライズ処理
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(todoTitle, forKey: "todoTitle")
-        aCoder.encode(todoDone, forKey: "todoDone")
-    }
+    //  セルを削除した時の処理
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        //  削除処理かどうか
+        if editingStyle == UITableViewCell.EditingStyle.delete {
+            //  ToDoリストから削除
+            todoList.remove(at: indexPath.row)
+            //  セルを削除
+            tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+            //  データを保存し，Data型にシリアライズする
+            do {
+                let data:Data = try NSKeyedArchiver.archivedData(withRootObject: todoList, requiringSecureCoding: true)
+                //  UserDefaultsに保存
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(data, forKey: "todoList")
+                userDefaults.synchronize()
+            } catch {
+                //  エラー処理なし
+            }
+        }
     }
 }
